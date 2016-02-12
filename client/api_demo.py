@@ -35,7 +35,7 @@ from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
 import time
 
-device="/dev/ttyUSB0"
+device="/dev/ttyACM0"
 log="Debug"
 
 for arg in sys.argv:
@@ -256,23 +256,23 @@ for node in network.nodes:
         print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
         print("  value : %s" % (network.nodes[node].get_power_level(val)))
 print "------------------------------------------------------------"
-#print
-#print "------------------------------------------------------------"
-#print "Activate the switches on the network"
-#print "Nodes in network : %s" % network.nodes_count
-#print "------------------------------------------------------------"
-#for node in network.nodes:
-#    for val in network.nodes[node].get_switches() :
-#        print("Activate switch %s on node %s" % \
-#                (network.nodes[node].values[val].label,node))
-#        network.nodes[node].set_switch(val,True)
-#        print("Sleep 10 seconds")
-#        time.sleep(10.0)
-#        print("Dectivate switch %s on node %s" % \
-#                (network.nodes[node].values[val].label,node))
-#        network.nodes[node].set_switch(val,False)
-#print "%s" % ('Done')
-#print "------------------------------------------------------------"
+print
+print "------------------------------------------------------------"
+print "Activate the switches on the network"
+print "Nodes in network : %s" % network.nodes_count
+print "------------------------------------------------------------"
+for node in network.nodes:
+    for val in network.nodes[node].get_switches() :
+        print("Activate switch %s on node %s" % \
+                (network.nodes[node].values[val].label,node))
+        network.nodes[node].set_switch(val,True)
+        print("Sleep 10 seconds")
+        time.sleep(10.0)
+        print("Dectivate switch %s on node %s" % \
+                (network.nodes[node].values[val].label,node))
+        network.nodes[node].set_switch(val,False)
+print "%s" % ('Done')
+print "------------------------------------------------------------"
 
 print
 print "------------------------------------------------------------"
