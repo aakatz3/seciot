@@ -126,7 +126,9 @@ network.controller.node.location = "Hello location"
 time.sleep(5.0)
 
 for node in network.nodes:
+    print "node:"+str(node)
     for val in network.nodes[node].get_switches() :
+        print "val:"+str(val)
         print("Activate switch")
         network.nodes[node].set_switch(val,True)
         time.sleep(10.0)
