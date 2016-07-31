@@ -31,6 +31,11 @@ tar -czf $DIR.tar $DIR
 scp $DIR.tar seciot@$IP:deploy/
 ssh seciot@$IP <REMOTESCRIPT>
 
+##TODO
+#Make sure repo is commited (git status), say uncommited and die FIRST
+#tag the repo, and write to file
+#write remote script
+
 
 
 rm $DIR.tar
