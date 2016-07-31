@@ -25,20 +25,18 @@ case $DIR in
 esac
 
 if [[ $(git status --porcelain 2>/dev/null| egrep "^(M| M)" | wc -l) != "0" ]]; then
-   die "There are uncommited/untracked files. Please commit and push."
+   die "There are uncommited/untracked files. Please commit these files."
 fi
 
-
-
 git show-ref refs/heads/master | awk -v date="$(date +"%Y-%m-%d %r")" '{ print $1, date }' > $DIR/version
+
 
 tar -czf $DIR.tar $DIR
 
 scp $DIR.tar seciot@$IP:deploy/
-ssh seciot@$IP <REMOTESCRIPT>
+ssh seciot@$IP ~/recieveCode.sh
 
 ##TODO
-#Make sure repo is commited (git status), say uncommited and die FIRST
 #tag the repo, and write to file
 #write remote script
 
