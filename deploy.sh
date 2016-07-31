@@ -24,6 +24,12 @@ case $DIR in
 	;;
 esac
 
+if [[ $(git status --porcelain 2>/dev/null| egrep "^(M| M)" | wc -l) != "0" ]]; then
+   die "There are uncommited/untracked files. Please commit and push."
+fi
+
+
+
 git show-ref refs/heads/master | awk -v date="$(date +"%Y-%m-%d %r")" '{ print $1, date }' > $DIR/version
 
 tar -czf $DIR.tar $DIR
