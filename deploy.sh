@@ -42,5 +42,5 @@ ssh seciot@$IP /home/seciot/recieveCode.sh
 
 
 
-rm $DIR.tar
+rm $DIR.tgz
 rm $DIR/version
