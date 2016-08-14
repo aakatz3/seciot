@@ -2,8 +2,8 @@
 cd deploy
 tar -xzf server.tgz
 cd server
-cp version ../
+cp version ../../
+rm -rfv /var/www/seciotcloud/
 mv * /var/www/
-cd ..
-rm -rfv server/
-rm server.tgz
+rm -rfv /home/seciot/deploy/
+mkdir /home/seciot/deploy
