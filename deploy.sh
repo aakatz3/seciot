@@ -33,7 +33,7 @@ git show-ref refs/heads/master | awk -v date="$(date +"%Y-%m-%d %r")" '{ print $
 
 tar -czf $DIR.tar $DIR
 
-scp $DIR.tar seciot@$IP:deploy/
+scp $DIR.tgz seciot@$IP:deploy/
 ssh seciot@$IP ~/recieveCode.sh
 
 ##TODO
