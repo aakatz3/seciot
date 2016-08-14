@@ -34,7 +34,7 @@ git show-ref refs/heads/master | awk -v date="$(date +"%Y-%m-%d %r")" '{ print $
 tar -czf $DIR.tgz $DIR
 
 scp $DIR.tgz seciot@$IP:deploy/
-ssh seciot@$IP ~/recieveCode.sh
+ssh seciot@$IP /home/seciot/recieveCode.sh
 
 ##TODO
 #tag the repo, and write to file
