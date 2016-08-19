@@ -144,7 +144,7 @@ if __name__ == "__main__":
                                 if not zwave.readState(anode) == zwavepoll.getvalue(anode):
 					state = zwave.readState(anode)
 				print anode,":",state
-				zwavepoll.setvalue(anode, 0)
+				#zwavepoll.setvalue(anode, 0)
                         zwavepoll.push_state()
                         time.sleep(.5)
                 else:
