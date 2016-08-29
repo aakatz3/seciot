@@ -144,18 +144,22 @@ if __name__ == "__main__":
 #	status = int(sys.argv[1])
 #	print status
 
-	if int(sys.argv[1]):
+	push = True
+
+	if int(sys.argv[1]) == 1:
 		status = True
-	else:
+	elif int(sys.argv[1]) == 0:
 		status = False
+	elif int(sys.argv[1]) == -1:
+		push = False
 
-	foobar.setvalue("switch1",status)
-	foobar.setvalue("switch2",status)
-	foobar.setvalue("switch3",status)
-	foobar.setvalue("switch4",status)
-	foobar.setvalue("switch5",status)
-
-	print foobar.push_state()
+	if push:
+		foobar.setvalue("switch1",status)
+		foobar.setvalue("switch2",status)
+		foobar.setvalue("switch3",status)
+		foobar.setvalue("switch4",status)
+		foobar.setvalue("switch5",status)
+		print foobar.push_state()
 
 	print "home", foobar.poll_state(IOT_HOME_NODE)
 
