@@ -17,7 +17,7 @@ app = Flask(__name__)
 def mobile_service():      
 
                              
-	foobar = SecIOT("aakatz3.aakportfolio.com:8031","sfasdasdfa","enc_key" , IOT_MOBILE_DEVICE, "/var/www/seciothome/seciothome/state_copy.db");
+	foobar = SecIOT("osrsrv.aakportfolio.com","sfasdasdfa","enc_key" , IOT_MOBILE_DEVICE, "/var/www/seciothome/seciothome/state_copy.db");
         
 	foobar.setvalue(request.args.get('friendly', '') ,request.args.get('state', ''))
         
@@ -48,7 +48,7 @@ def main():
 	return page
 
 if __name__ == "__main__":                                                                                                                   
-    app.run(host='0.0.0.0',debug=True)                                                                                                                  
+    app.run(host='0.0.0.0',debug=True, port=8080)                                                                                                                  
               
                                                                                                                                              
 

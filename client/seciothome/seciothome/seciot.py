@@ -135,8 +135,10 @@ class SecIOT():
 
                                                                                                                                            
 if __name__ == "__main__":                                                                                                                   
-	foobar = SecIOT("127.0.0.1:5000","sfasdasdfa","enc_key" , IOT_HOME_NODE);
-#	foobar = SecIOT("aakatz3.aakportfolio.com:8031","sfasdasdfa","enc_key" , IOT_MOBILE_DEVICE, "state_copy.db");
+	foobar = SecIOT("osrsrv.aakportfolio.com","sfasdasdfa","enc_key" , IOT_HOME_NODE);
+#	foobar = SecIOT("osrsrv.aakportfolio.com","sfasdasdfa","enc_key" , IOT_MOBILE_DEVICE);
+
+#	foobar = SecIOT("127.0.0.1:5000","sfasdasdfa","enc_key" , IOT_HOME_NODE);
 #	foobar = SecIOT("127.0.0.1:5000","sfasdasdfa","enc_key" , IOT_MOBILE_DEVICE);
 	
 #	status = int(sys.argv[1])

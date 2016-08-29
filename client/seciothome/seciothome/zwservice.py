@@ -120,7 +120,7 @@ class ZWDeviceController(IOTDeviceController):
 if __name__ == "__main__":
 	#Create controller and network service
 	zwave = ZWDeviceController(iotsec_settings.IOT_ZWAVE_NAME, iotsec_settings.IOT_ZWAVE_LOCATION)
-	zwavepoll = SecIOT("aakatz3.aakportfolio.com:8031","sfasdasdfa","enc_key", IOT_HOME_NODE)
+	zwavepoll = SecIOT("osrsrv.aakportfolio.com","sfasdasdfa","enc_key", IOT_HOME_NODE)
 
 	i = 0
 	while True:
