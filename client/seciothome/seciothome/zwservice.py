@@ -130,6 +130,7 @@ if __name__ == "__main__":
 		#		zwavepoll.setvalue(node, zwave.readState(node))
 
 		if i == 0:
+#			print zwavepoll.poll_state(IOT_HOME_NODE)
 			print zwavepoll.poll_state(IOT_MOBILE_DEVICE)
 			for node in zwave.export():
                                 anode =node #unicodedata.normalize('NFKD', node).encode('ascii','ignore')
@@ -144,8 +145,6 @@ if __name__ == "__main__":
                                 if not zwave.readState(anode) == zwavepoll.getvalue(anode):
 					state = zwave.readState(anode)
 				print anode,":",state
-				#zwavepoll.setvalue(anode, 0)
+				zwavepoll.setvalue(anode, state)
                         zwavepoll.push_state()
                         time.sleep(.5)
-                else:
-                        5/0
