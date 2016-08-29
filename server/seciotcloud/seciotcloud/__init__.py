@@ -30,7 +30,7 @@ def check_db():
 
 
 @app.route("/home/<path>", methods=['GET', 'POST'])                                                                                                                
-def home_service(path):
+def home_service(path, redir = 0):
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
@@ -42,7 +42,16 @@ def home_service(path):
 #	try:
 	print request.get_data()
 	c.execute("select * from iotdata where home_guid=? and client_or_server=?" , (request.json['guid'], IOT_MOBILE_DEVICE))
-	return c.fetchone()[3]
+        data = c.fetchone()
+        try:
+                data = data[3]
+        except:
+                data = None
+               
+        if(data == None):
+                if(redir == 0):
+                        mobile_service(redir = 1)
+        return data
 #	except:
 #		return json.jsonify([])
 
@@ -50,7 +59,7 @@ def home_service(path):
 
 
 @app.route("/mobile/<path>", methods=['GET', 'POST'])                                                                                                                
-def mobile_service(path):
+def mobile_service(path, redir = 0):
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
@@ -61,7 +70,16 @@ def mobile_service(path):
 
 #	try:
 	c.execute("select * from iotdata where home_guid=? and client_or_server=?" , [request.json['guid'], IOT_HOME_NODE])
-	return c.fetchone()[3]
+        data = c.fetchone()
+        try:
+                data = data[3]
+        except:
+                data = None
+               
+        if(data == None):
+                if(redir == 0):
+                        home_service(redir = 1)
+        return data
 #	except:
 #		return json.jsonify([])
 
