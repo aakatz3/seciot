@@ -31,6 +31,8 @@ def check_db():
 
 @app.route("/home/<path>", methods=['GET', 'POST'])                                                                                                                
 def home_service(path, redir = 0):
+	if(redir == 1):
+		print "redirected"
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
@@ -51,6 +53,8 @@ def home_service(path, redir = 0):
         if(data == None):
                 if(redir == 0):
                         mobile_service(redir = 1)
+		else:
+			print "RETURNING NONE!"
         return data
 #	except:
 #		return json.jsonify([])
@@ -60,6 +64,8 @@ def home_service(path, redir = 0):
 
 @app.route("/mobile/<path>", methods=['GET', 'POST'])                                                                                                                
 def mobile_service(path, redir = 0):
+	if(redir == 1):
+		print "redirecting"
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
@@ -79,6 +85,8 @@ def mobile_service(path, redir = 0):
         if(data == None):
                 if(redir == 0):
                         home_service(redir = 1)
+		else:
+			print "RETURNING NONE!"
         return data
 #	except:
 #		return json.jsonify([])
