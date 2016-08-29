@@ -62,7 +62,7 @@ for arg in sys.argv:
 
 #Define some manager options
 options = ZWaveOption(device, \
-  config_path="../openzwave/config", \
+  config_path="/opt/openzwave/config", \
   user_path=".", cmd_line="")
 options.set_log_file("OZW_Log.log")
 options.set_append_log_file(False)
@@ -134,19 +134,20 @@ network.controller.node.location = "Hello location"
     #We only activate the first switch
     #exit
 
-print(ZWaveNode(8, network).query_stage)
-print(ZWaveNode(8, network).refresh_info())
-print(ZWaveNode(8, network).get_values_for_command_class(0x62))
-print(ZWaveNode(8, network).request_config_param(0x0F))
-print(ZWaveNode(8, network).request_state())
-print(ZWaveNode(8, network).set_config_param(0x5, 0xFF))
+#print(ZWaveNode(8, network).query_stage)
+#print(ZWaveNode(8, network).refresh_info())
+#print(ZWaveNode(8, network).get_values_for_command_class(0x62))
+#print(ZWaveNode(8, network).request_config_param(0x0F))
+#print(ZWaveNode(8, network).request_state())
+#print(ZWaveNode(8, network).set_config_param(0x5, 0xFF))
 
-print(ZWaveNode(9, network).query_stage)
-print(ZWaveNode(9, network).refresh_info())
-print(ZWaveNode(9, network).get_values_for_command_class(0x62))
-print(ZWaveNode(9, network).request_config_param(0x0F))
-print(ZWaveNode(9, network).request_state())
-print(ZWaveNode(9, network).set_config_param(0x5, 0xFF))
+print(ZWaveNode(10, network).query_stage)
+print(ZWaveNode(10, network).command_classes_as_string)
+print(ZWaveNode(10, network).refresh_info())
+print(ZWaveNode(10, network).get_values_for_command_class(0x62))
+print(ZWaveNode(10, network).request_config_param(0x0F))
+print(ZWaveNode(10, network).request_state())
+print(ZWaveNode(10, network).set_config_param(0x5, 0xFF))
 
 
 
