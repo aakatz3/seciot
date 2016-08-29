@@ -21,9 +21,12 @@ def mobile_service():
         
 	foobar.setvalue(request.args.get('friendly', '') ,request.args.get('state', ''))
         
-	print foobar.push_state()
+	a = foobar.push_state()
 	
-	return str(foobar.poll_state(IOT_HOME_NODE))
+	print a
+	
+#	return str(foobar.poll_state(IOT_HOME_NODE))
+	return str(a)
 
 	
 @app.route("/")                                                                                                                              
