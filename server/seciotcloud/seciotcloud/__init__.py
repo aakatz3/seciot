@@ -50,7 +50,7 @@ def poll(override = -1):
 	if(data == None) and (override == -1):
 		if (request.json['home_or_mobile'] == IOT_HOME_NODE):
 			poll(override = IOT_MOBILE_DEVICE)
-		else if (request.json['home_or_mobile'] = IOT_MOBILE_DEVICE):
+		elif (request.json['home_or_mobile'] = IOT_MOBILE_DEVICE):
 			poll(override = IOT_HOME_NODE)			   
 		else:
 			print "RETURNING NONE!"
