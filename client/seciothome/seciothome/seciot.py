@@ -7,7 +7,6 @@ from iotsec_settings import *
 import sqlite3
 import sys
 
-
 class SecIOT():
 	def __init__(self, server_host, guid, auth, home_or_mobile,statefile="state.db"):
 		self.server_host = server_host
@@ -42,7 +41,7 @@ class SecIOT():
 		return service_path
 
 	def poll_state(self, poll_type):
-		req = urllib2.Request('http://%s/%s/%s' % (self.server_host, self.get_server_path(poll_type), self.guid))
+		req = urllib2.Request('http://%s/%s/' % (self.server_host, 'poll')
 		req.add_header('Content-Type', 'application/json')
 
 		tmsg = {'guid':self.guid, 'home_or_mobile': poll_type, 'state':self.getvalues()}
@@ -70,7 +69,7 @@ class SecIOT():
 		rc = c.rowcount
 		print "rowcount %d" % rc
 
-		req = urllib2.Request('http://%s/%s/%s' % (self.server_host, self.service_path, self.guid))
+		req = urllib2.Request('http://%s/%s/' % (self.server_host, 'poll', self.guid))
 		req.add_header('Content-Type', 'application/json')
 
 #		if rc > 0:
