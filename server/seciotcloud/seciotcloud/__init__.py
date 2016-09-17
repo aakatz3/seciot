@@ -41,17 +41,17 @@ def poll(override = -1):
 	c = conn.cursor()
 
 	print request.get_data()
-	c.execute("select * from iotdata where base_guid=? and client_or_server=?;" , (request.json['guid'], HOME_OR_MOBILE)
+	c.execute("select * from iotdata where base_guid=? and client_or_server=?;" , (request.json['guid'], HOME_OR_MOBILE))
 	data = c.fetchone()
 	try:
-			data = data[3]
+		data = data[3]
 	except:
-			data = None
+		data = None
 	if(data == None) and (override == -1):
-			if (request.json['home_or_mobile'] == IOT_HOME_NODE):
-				poll(override = IOT_MOBILE_DEVICE)
-			else if (request.json['home_or_mobile'] = IOT_MOBILE_DEVICE):
-				poll(override = IOT_HOME_NODE)			   
+		if (request.json['home_or_mobile'] == IOT_HOME_NODE):
+			poll(override = IOT_MOBILE_DEVICE)
+		else if (request.json['home_or_mobile'] = IOT_MOBILE_DEVICE):
+			poll(override = IOT_HOME_NODE)			   
 		else:
 			print "RETURNING NONE!"
 	return data
