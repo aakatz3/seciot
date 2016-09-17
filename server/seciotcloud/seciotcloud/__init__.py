@@ -9,8 +9,8 @@ SQL_DB_PATH = '/var/www/seciotcloud/seciotcloud/iotsec.db'
 
 
 #import pycrypto
-                                                                                                                                            
-app = Flask(__name__)                                                                                                                        
+																																			
+app = Flask(__name__)																														
 
 
 #
@@ -29,7 +29,7 @@ def check_db():
 		c.execute("create table iotdata(base_guid text,client_or_server integer,msg_time text,state text, node_map text,UNIQUE (base_guid,client_or_server)  ON CONFLICT REPLACE);") 
 		conn.commit()
 
-@app.route("/poll/", methods=['GET', 'POST'])                                                                                                                
+@app.route("/poll/", methods=['GET', 'POST'])																												
 def poll(override = -1):
 	HOME_OR_MOBILE = request.json['home_or_mobile']
 	if(override != -1):
@@ -42,21 +42,21 @@ def poll(override = -1):
 
 	print request.get_data()
 	c.execute("select * from iotdata where base_guid=? and client_or_server=?;" , (request.json['guid'], HOME_OR_MOBILE)
-    data = c.fetchone()
-    try:
-            data = data[3]
-    except:
-            data = None
-    if(data == None) and (override == -1):
-            if (request.json['home_or_mobile'] == IOT_HOME_NODE):
+	data = c.fetchone()
+	try:
+			data = data[3]
+	except:
+			data = None
+	if(data == None) and (override == -1):
+			if (request.json['home_or_mobile'] == IOT_HOME_NODE):
 				poll(override = IOT_MOBILE_DEVICE)
 			else if (request.json['home_or_mobile'] = IOT_MOBILE_DEVICE):
-				poll(override = IOT_HOME_NODE)               
+				poll(override = IOT_HOME_NODE)			   
 		else:
 			print "RETURNING NONE!"
 	return data
 
-@app.route("/push/", methods=['GET', 'POST'])                                                                                                                
+@app.route("/push/", methods=['GET', 'POST'])																												
 def home_service(redir = 0):
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
@@ -91,9 +91,9 @@ def set_nodes():
 	return get_nodes()
 	
 
-@app.route("/")                                                                                                                              
-def main():                                                                                                                                  
-    return "Hello, world!!!"                                                                                                                 
+@app.route("/")																															  
+def main():																																  
+	return "Hello, world!!!"																												 
 
 @app.route("/guid/new")
 def new_guid():
@@ -108,8 +108,8 @@ def new_guid():
 	
 	
 	
-if __name__ == "__main__":                                                                                                                   
-    app.run(host="0.0.0.0",port=80,debug=True)                                                                                                                                
-                                                                                                                                             
+if __name__ == "__main__":																												   
+	app.run(host="0.0.0.0",port=80,debug=True)																																
+																																			 
 
 
