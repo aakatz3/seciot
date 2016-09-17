@@ -46,7 +46,7 @@ def home_service(path, redir = 0):
 
 #	try:
 	print request.get_data()
-	c.execute("select * from iotdata where base_guid=? and client_or_server=?l;" , (request.json['guid'], IOT_MOBILE_DEVICE))
+	c.execute("select * from iotdata where base_guid=? and client_or_server=?;" , (request.json['guid'], IOT_MOBILE_DEVICE))
         data = c.fetchone()
         try:
                 data = data[3]
