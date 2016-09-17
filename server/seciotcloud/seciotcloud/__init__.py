@@ -32,22 +32,23 @@ def check_db():
 @app.route("/poll/", methods=['GET', 'POST'])																												
 def poll(override = -1):
 	HOME_OR_MOBILE = request.json['home_or_mobile']
-	if(override != -1):
-		print "redirected"
+	print type(HOME_OR_MOBILE)
+	print HOME_OR_MOBILE
+	if(override == -1):
+		print "not redirected"
 	else:
-		HOME_OR_MOBILE = override
+		print "redirected"
+		HOME_OR_MOBILE = str(override)
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
 
 	print request.get_data()
-	c.execute("select * from iotdata where base_guid=? and client_or_server=?;" , (request.json['guid'], HOME_OR_MOBILE))
+	c.execute("select state from iotdata where base_guid=? and client_or_server=?;" , (request.json['guid'], HOME_OR_MOBILE))
 	data = c.fetchone()
-	try:
-		data = data[3]
-	except:
-		data = None
-	if(data == None) and (override == -1):
+	print data
+	
+	if(data == "{}") and (override == -1):
 		if (request.json['home_or_mobile'] == IOT_HOME_NODE):
 			poll(override = IOT_MOBILE_DEVICE)
 		elif (request.json['home_or_mobile'] == IOT_MOBILE_DEVICE):
@@ -57,7 +58,7 @@ def poll(override = -1):
 	return data
 
 @app.route("/push/", methods=['GET', 'POST'])																												
-def home_service(redir = 0):
+def push(redir = 0):
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
