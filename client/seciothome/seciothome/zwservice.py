@@ -136,7 +136,6 @@ if __name__ == "__main__":
                                 anode =node #unicodedata.normalize('NFKD', node).encode('ascii','ignore')
                                 zwave.setState(anode, zwavepoll.getvalue(anode))
                                 state =  zwave.readState(anode)
-                                #zwavepoll.setvalue(node, state)
 			time.sleep(0.5)
                 elif i:
 
@@ -148,3 +147,4 @@ if __name__ == "__main__":
 				zwavepoll.setvalue(anode, state)
                         zwavepoll.push_state()
                         time.sleep(.5)
+		time.sleep(1)

@@ -77,7 +77,7 @@ class SecIOT():
 			c.execute("update valuetables set modified=0")
 			self.dbconn.commit()
 			
-			print 'URL http://%s/%s/%s' % (self.server_host, self.service_path, self.guid)
+			print 'URL http://%s/%s/' % (self.server_host, self.service_path)
 
 			tmsg = {'guid':self.guid, 'home_or_mobile': self.home_or_mobile, 'state':self.getvalues()}
 

@@ -50,14 +50,16 @@ def poll(override = -1):
 	print type(data)
 	print data
 	
-#	if(not (data is tuple)) and (override == -1):
-#		if (request.json['home_or_mobile'] == IOT_HOME_NODE):
-#			poll(override = IOT_MOBILE_DEVICE)
-#		elif (request.json['home_or_mobile'] == IOT_MOBILE_DEVICE):
-#			poll(override = IOT_HOME_NODE)			   
-#	if not (data is tuple):
-#		print "Data is NONE!"
-#		data = "{}"
+	if(not(data is None)):
+		return data
+	elif (override == -1):
+		if (request.json['home_or_mobile'] == IOT_HOME_NODE):
+			return poll(override = IOT_MOBILE_DEVICE)
+		elif (request.json['home_or_mobile'] == IOT_MOBILE_DEVICE):
+			return poll(override = IOT_HOME_NODE)			   
+	else:
+		print "Data is NONE!"
+		data = "{}"
 	return data
 
 @app.route("/push/", methods=['GET', 'POST'])																												
