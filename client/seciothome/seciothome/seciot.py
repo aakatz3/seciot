@@ -7,7 +7,6 @@ from iotsec_settings import *
 import sqlite3
 import sys
 
-
 class SecIOT():
 	def __init__(self, server_host, guid, auth, home_or_mobile,statefile="state.db"):
 		self.server_host = server_host
@@ -42,7 +41,7 @@ class SecIOT():
 		return service_path
 
 	def poll_state(self, poll_type):
-		req = urllib2.Request('http://%s/%s/%s' % (self.server_host, self.get_server_path(poll_type), self.guid))
+		req = urllib2.Request('http://%s/%s/' % (self.server_host, 'poll'))
 		req.add_header('Content-Type', 'application/json')
 
 		tmsg = {'guid':self.guid, 'home_or_mobile': poll_type, 'state':self.getvalues()}
@@ -70,7 +69,7 @@ class SecIOT():
 		rc = c.rowcount
 		print "rowcount %d" % rc
 
-		req = urllib2.Request('http://%s/%s/%s' % (self.server_host, self.service_path, self.guid))
+		req = urllib2.Request('http://%s/%s/' % (self.server_host, 'push'))
 		req.add_header('Content-Type', 'application/json')
 
 #		if rc > 0:
@@ -78,7 +77,7 @@ class SecIOT():
 			c.execute("update valuetables set modified=0")
 			self.dbconn.commit()
 			
-			print 'URL http://%s/%s/%s' % (self.server_host, self.service_path, self.guid)
+			print 'URL http://%s/%s/' % (self.server_host, self.service_path)
 
 			tmsg = {'guid':self.guid, 'home_or_mobile': self.home_or_mobile, 'state':self.getvalues()}
 
@@ -136,7 +135,7 @@ class SecIOT():
                                                                                                                                            
 if __name__ == "__main__":                                                                                                                   
 #	foobar = SecIOT("osrsrv.aakportfolio.com","sfasdasdfa","enc_key" , IOT_HOME_NODE);
-	foobar = SecIOT("osrsrv.aakportfolio.com","sfasdasdfa","enc_key" , IOT_MOBILE_DEVICE);
+	foobar = SecIOT("osrsrv.aakportfolio.com","sfasdasdfa","enc_key" , int(sys.argv[2]))
 
 #	foobar = SecIOT("127.0.0.1:5000","sfasdasdfa","enc_key" , IOT_HOME_NODE);
 #	foobar = SecIOT("127.0.0.1:5000","sfasdasdfa","enc_key" , IOT_MOBILE_DEVICE);
