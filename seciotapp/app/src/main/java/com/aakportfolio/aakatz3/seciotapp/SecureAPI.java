@@ -170,13 +170,14 @@ public class SecureAPI {
         httpsURLConnection.setRequestMethod("POST");
         httpsURLConnection.setRequestProperty("Accept", "application/json");
         httpsURLConnection.setRequestProperty("Content-Type", "application/json");
-        httpsURLConnection.setRequestProperty("Host", "osrsrv.aakportfolio.com");
+       // httpsURLConnection.setRequestProperty("Host", "osrsrv.aakportfolio.com");
         httpsURLConnection.setDoInput(true);
         httpsURLConnection.setDoOutput(true);
 
+        Log.d("request", URLEncoder.encode(json.toString(), "UTF-8"));
 
 
-        httpsURLConnection.connect();
+//        httpsURLConnection.connect();
 
         DataOutputStream outputStream = new DataOutputStream(httpsURLConnection.getOutputStream());
        // outputStream.write(json.toString().getBytes("UTF-8"));
@@ -194,7 +195,7 @@ public class SecureAPI {
         //bufferedWriter.flush();
         //bufferedWriter.close();
         outputStream.close();
-        //httpsURLConnection.connect();
+        httpsURLConnection.connect();
 
         String response = getResponseFromStream(httpsURLConnection.getInputStream());
         return new JSONObject(response);

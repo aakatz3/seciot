@@ -43,7 +43,11 @@ public class seciot {
         postParams.put("home_or_mobile", Integer.toString(iotsettings.IOT_MOBILE_DEVICE));
         Log.d("json", postParams.toString());
 
+        secureAPI.HTTPSGETJSON(url);
+
         JSONObject jso = secureAPI.HTTPSPOSTJSON(url, postParams);
+
+        //USE A MF. ASYNC TASK!!!!!!!
 
         return jso;
     }
