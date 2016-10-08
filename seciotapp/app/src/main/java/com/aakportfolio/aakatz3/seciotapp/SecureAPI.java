@@ -62,12 +62,12 @@ public class SecureAPI {
     private void createSocketFactory(InputStream is) throws Exception {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         Certificate certificate = certificateFactory.generateCertificate(is);
-        Log.d("SecureAPI", "ca=" + ((X509Certificate) certificate).getSubjectDN());
+        Log.d("SecureAPI", "asdf=" + ((X509Certificate) certificate).getSubjectDN());
 
 
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         keyStore.load(null, null);
-        keyStore.setCertificateEntry("ca", certificate);
+        keyStore.setCertificateEntry("asdf", certificate);
 
         TrustManagerFactory trustManagerFactory =
                 TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -154,6 +154,47 @@ public class SecureAPI {
         bufferedWriter.close();
         outputStream.close();
         httpsURLConnection.connect();
+
+        String response = getResponseFromStream(httpsURLConnection.getInputStream());
+        return new JSONObject(response);
+    }
+
+    public JSONObject HTTPSPOSTJSON(String urlString, JSONObject json) throws Exception {
+        URL url = new URL(urlString);
+        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+
+        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
+        httpsURLConnection.setReadTimeout(10000);
+        httpsURLConnection.setConnectTimeout(15000);
+        httpsURLConnection.setUseCaches(false);
+        httpsURLConnection.setRequestMethod("POST");
+        httpsURLConnection.setRequestProperty("Accept", "application/json");
+        httpsURLConnection.setRequestProperty("Content-Type", "application/json");
+        httpsURLConnection.setRequestProperty("Host", "osrsrv.aakportfolio.com");
+        httpsURLConnection.setDoInput(true);
+        httpsURLConnection.setDoOutput(true);
+
+
+
+        httpsURLConnection.connect();
+
+        DataOutputStream outputStream = new DataOutputStream(httpsURLConnection.getOutputStream());
+       // outputStream.write(json.toString().getBytes("UTF-8"));
+
+        //OutputStreamWriter wr= new OutputStreamWriter(httpsURLConnection.getOutputStream());
+        outputStream.writeBytes(URLEncoder.encode(json.toString(), "UTF-8"));
+        //wr.write(json.toString());
+        //wr.flush();
+        //wr.close();
+        outputStream.flush();
+       /* outputStream.
+        BufferedWriter bufferedWriter =
+                new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+        bufferedWriter.write(json.toString());*/
+        //bufferedWriter.flush();
+        //bufferedWriter.close();
+        outputStream.close();
+        //httpsURLConnection.connect();
 
         String response = getResponseFromStream(httpsURLConnection.getInputStream());
         return new JSONObject(response);

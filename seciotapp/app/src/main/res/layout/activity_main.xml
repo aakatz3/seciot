@@ -9,8 +9,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.aakportfolio.aakatz3.seciotapp.MainActivity">
 
-    <TextView
+
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/control_layout"
+        android:orientation="vertical" />
+    </ScrollView>
 </RelativeLayout>
