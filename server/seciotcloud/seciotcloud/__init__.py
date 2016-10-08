@@ -30,10 +30,11 @@ def check_db():
 		conn.commit()
 
 @app.route("/poll/", methods=['GET', 'POST'])																												
-def poll(override = -1):
+def poll(override = -1, push = 0):
 	HOME_OR_MOBILE = request.json['home_or_mobile']
-	print type(HOME_OR_MOBILE)
-	print HOME_OR_MOBILE
+#	print type(HOME_OR_MOBILE)
+	if (push == 0):
+		print HOME_OR_MOBILE
 	if(override == -1):
 		print "not redirected"
 	else:
@@ -43,20 +44,20 @@ def poll(override = -1):
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
 
-	print request.get_data()
-	c.execute("select state from iotdata where base_guid=? and client_or_server=?;" , (request.json['guid'], HOME_OR_MOBILE))
+#	print request.get_data()
+	c.execute("select state from iotdata where base_guid=? and client_or_server=?;" , (request.json['guid'], str(HOME_OR_MOBILE)))
 	data = c.fetchone()
-	print "data:"
-	print type(data)
-	print data
+#	print "data:"
+#	print type(data)
+#	print data
 	
 	if(not(data is None)):
 		return data
 	elif (override == -1):
-		if (request.json['home_or_mobile'] == IOT_HOME_NODE):
-			return poll(override = IOT_MOBILE_DEVICE)
-		elif (request.json['home_or_mobile'] == IOT_MOBILE_DEVICE):
-			return poll(override = IOT_HOME_NODE)			   
+		if (request.json['home_or_mobile'] == str(IOT_HOME_NODE)):
+			return poll(override = str(IOT_MOBILE_DEVICE))
+		elif (request.json['home_or_mobile'] == str(IOT_MOBILE_DEVICE)):
+			return poll(override = str(IOT_HOME_NODE))			   
 	else:
 		print "Data is NONE!"
 		data = "{}"
@@ -67,11 +68,12 @@ def push(redir = 0):
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
+	print "push"
 
 	if 'state' in request.json:
 		c.execute("insert or replace into iotdata (base_guid, client_or_server,msg_time, state) values (?,?,datetime('now','localtime'),?);" , [request.json['guid'], request.json['home_or_mobile'], request.get_data()])
 		conn.commit()
-	return poll()
+	return poll(push = 1)
 
 
 
@@ -81,7 +83,7 @@ def get_nodes():
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
-	c.execute("select node_map from iotdata where base_guid=?;", guid)
+	c.execute("select node_map from iotdata where base_guid=?;", (guid,))
 	return c.fetchone()
 
 		
@@ -107,9 +109,11 @@ def new_guid():
 	conn = sqlite3.connect(SQL_DB_PATH)
 	c = conn.cursor()
 	while True:
-		guid = hashlib.sha1(os.urandom(100)).hexdigest()
-		c.execute("select * from iotdate where base_guid=?;", guid)
-		if(c.fetchone() == None):
+		guid = str(hashlib.sha1(os.urandom(100)).hexdigest())
+		c.execute("select state from iotdata where base_guid=?;", (guid,))
+		if(c.fetchone() is None):
+			c.execute("insert or replace into iotdata (base_guid, client_or_server)  values (?,?)", (guid,'0'))
+			conn.commit()
 			return guid
 	
 	
