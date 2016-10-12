@@ -1,11 +1,13 @@
 package com.aakportfolio.aakatz3.seciotapp;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -33,7 +35,7 @@ public class seciot {
         return null;
     }
 
-    public JSONObject pollState() throws Exception{
+    public void pollState() throws Exception{
 
         String url = SERVER_URL + "poll/";
 
@@ -43,12 +45,53 @@ public class seciot {
         postParams.put("home_or_mobile", Integer.toString(iotsettings.IOT_MOBILE_DEVICE));
         Log.d("json", postParams.toString());
 
-        secureAPI.HTTPSGETJSON(url);
 
-        JSONObject jso = secureAPI.HTTPSPOSTJSON(url, postParams);
+        Log.d("test", secureAPI.toString());
+        Log.d("test", url);
+        Log.d("test", postParams.toString());
 
-        //USE A MF. ASYNC TASK!!!!!!!
 
-        return jso;
+        SecIOTHelerParams secIOTHelerParams = new SecIOTHelerParams(secureAPI, url, postParams);
+
+        new SecIOTHelper().execute(secIOTHelerParams);
     }
+    private class SecIOTHelerParams{
+        SecureAPI secureAPI;
+        JSONObject jso;
+        String url;
+        SecIOTHelerParams(SecureAPI secureAPI, String url, JSONObject jso){
+            this.secureAPI = secureAPI;
+            this.jso = jso;
+            this.url = url;
+        }
+    }
+
+    private class SecIOTHelper extends AsyncTask<SecIOTHelerParams, JSONObject, JSONObject> {
+
+
+
+        @Override
+        protected JSONObject doInBackground(SecIOTHelerParams... params) {
+            try{
+                HashMap<String, String> map = new HashMap<>();
+                map.put("a","b");
+                //return params[0].secureAPI.HTTPSPOSTJSON(params[0].url, map);
+                return params[0].secureAPI.HTTPSPOSTJSON(params[0].url,params[0].jso);
+            }catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject v) {
+            if(v != null) {
+                Log.d("json", v.toString());
+            } else {
+                Log.d("json", "NULL");
+            }
+        }
+    }
+
+
 }

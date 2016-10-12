@@ -46,7 +46,7 @@ public class SecureAPI {
         if( mySecureAPI == null){
             try {
                 mySecureAPI = new SecureAPI(c.getApplicationContext()
-                        .getResources().openRawResource(R.raw.ca));
+                        .getResources().openRawResource(R.raw.fasd));
             }catch (Exception e){
                 Log.d("SecureAPI Exception",e.getMessage());
             }
@@ -62,12 +62,12 @@ public class SecureAPI {
     private void createSocketFactory(InputStream is) throws Exception {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         Certificate certificate = certificateFactory.generateCertificate(is);
-        Log.d("SecureAPI", "asdf=" + ((X509Certificate) certificate).getSubjectDN());
+        Log.d("SecureAPI", "ca=" + ((X509Certificate) certificate).getSubjectDN());
 
 
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         keyStore.load(null, null);
-        keyStore.setCertificateEntry("asdf", certificate);
+        keyStore.setCertificateEntry("ca", certificate);
 
         TrustManagerFactory trustManagerFactory =
                 TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -162,7 +162,7 @@ public class SecureAPI {
     public JSONObject HTTPSPOSTJSON(String urlString, JSONObject json) throws Exception {
         URL url = new URL(urlString);
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-
+/*
         httpsURLConnection.setSSLSocketFactory(mySocketFactory);
         httpsURLConnection.setReadTimeout(10000);
         httpsURLConnection.setConnectTimeout(15000);
@@ -173,11 +173,19 @@ public class SecureAPI {
        // httpsURLConnection.setRequestProperty("Host", "osrsrv.aakportfolio.com");
         httpsURLConnection.setDoInput(true);
         httpsURLConnection.setDoOutput(true);
+*/
+        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
+        httpsURLConnection.setReadTimeout(10000);
+        httpsURLConnection.setConnectTimeout(15000);
+        httpsURLConnection.setRequestMethod("POST");
+        httpsURLConnection.setRequestProperty("Content-Type", "application/json");
+        httpsURLConnection.setDoInput(true);
+        httpsURLConnection.setDoOutput(true);
 
         Log.d("request", URLEncoder.encode(json.toString(), "UTF-8"));
 
 
-//        httpsURLConnection.connect();
+       httpsURLConnection.connect();
 
         DataOutputStream outputStream = new DataOutputStream(httpsURLConnection.getOutputStream());
        // outputStream.write(json.toString().getBytes("UTF-8"));
@@ -195,9 +203,11 @@ public class SecureAPI {
         //bufferedWriter.flush();
         //bufferedWriter.close();
         outputStream.close();
+
         httpsURLConnection.connect();
 
         String response = getResponseFromStream(httpsURLConnection.getInputStream());
+
         return new JSONObject(response);
     }
 

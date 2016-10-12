@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
         controlLayout = (LinearLayout) findViewById(R.id.control_layout);
 
-        foobar = new seciot(prefs.getString("guid", "sfasdasdfa"), SecureAPI.getInstance(this));
+        SecureAPI secureAPI = SecureAPI.getInstance(this);
+
+        foobar = new seciot(prefs.getString("guid", "sfasdasdfa"), secureAPI);
         int count = 0;
         for(iotnode n : foobar.getNodes()){
             CheckBox cb = new CheckBox(this);
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             });
             count++;
             try {
-                Toast.makeText(this, foobar.pollState().toString(), Toast.LENGTH_SHORT).show();
+                foobar.pollState();
             } catch (Exception ex){
                 ex.printStackTrace();
             }
