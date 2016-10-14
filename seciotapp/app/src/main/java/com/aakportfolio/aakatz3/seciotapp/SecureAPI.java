@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -182,7 +183,10 @@ public class SecureAPI {
         httpsURLConnection.setDoInput(true);
         httpsURLConnection.setDoOutput(true);
 
-        Log.d("request", URLEncoder.encode(json.toString(), "UTF-8"));
+        //String request = URLEncoder.encode(json.toString(), "UTF-8");
+        String request = json.toString();
+
+        Log.d("request", request);
 
 
        httpsURLConnection.connect();
@@ -191,7 +195,7 @@ public class SecureAPI {
        // outputStream.write(json.toString().getBytes("UTF-8"));
 
         //OutputStreamWriter wr= new OutputStreamWriter(httpsURLConnection.getOutputStream());
-        outputStream.writeBytes(URLEncoder.encode(json.toString(), "UTF-8"));
+        outputStream.writeBytes(request);
         //wr.write(json.toString());
         //wr.flush();
         //wr.close();
@@ -206,7 +210,18 @@ public class SecureAPI {
 
         httpsURLConnection.connect();
 
-        String response = getResponseFromStream(httpsURLConnection.getInputStream());
+        String response = "";
+
+        try{
+            response = getResponseFromStream(httpsURLConnection.getInputStream());
+            response = response.replace("\\\"", "\"");
+            response = response.replace("\"[", "[");
+            response = response.replace("]\"", "]");
+        } catch(FileNotFoundException e){
+            e.printStackTrace();
+            response = getResponseFromStream(httpsURLConnection.getErrorStream());
+            Log.d("httpserror", response);
+        }
 
         return new JSONObject(response);
     }

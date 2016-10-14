@@ -6,9 +6,20 @@ package com.aakportfolio.aakatz3.seciotapp;
 
 class iotnode {
     int index;
-    private String friendlyName;
+    String friendlyName;
+    boolean state;
+
+    public iotnode(int index, String friendlyName, boolean state){
+        this.state = state;
+        this.index = index;
+        this.friendlyName = friendlyName;
+    }
+
     boolean getState(){
-        return true;
+        return state;
+    }
+    void setState(boolean state){
+        this.state = state;
     }
 
     public String toString(){
