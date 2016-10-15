@@ -79,7 +79,7 @@ public class seciot {
             switchObj.add(0);
             switches.add(new JSONArray(switchObj));*/
             //switches.add(new JSONArray("[\"" + n.friendlyName + "\"," + (n.state ? "\"1\",\"" : "\"0\",\"") +  formattedDate + "\",0]"));
-            switches.add(new JSONArray("['" + n.friendlyName + "'," + (n.state ? "'1','" : "'0','") +  formattedDate + "',0]"));
+            switches.add(new JSONArray("['" + n.friendlyName + "'," + (n.state ? "'1','" : "'0','") +  formattedDate + "',1]"));
         }
 
         JSONArray arr = new JSONArray(switches);

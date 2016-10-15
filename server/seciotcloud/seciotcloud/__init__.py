@@ -35,10 +35,11 @@ def poll(override = -1, push = 0):
 #	print type(HOME_OR_MOBILE)
 	if (push == 0):
 		print HOME_OR_MOBILE
-	if(override == -1):
-		print "not redirected"
+#	if(override == -1):
+		if(0 == 1):
+			print "not redirected"
 	else:
-		print "redirected"
+#		print "redirected"
 		HOME_OR_MOBILE = str(override)
 	check_db()
 	conn = sqlite3.connect(SQL_DB_PATH)   
@@ -69,11 +70,12 @@ def push(redir = 0):
 	conn = sqlite3.connect(SQL_DB_PATH)   
 	c = conn.cursor()
 	print "push"
+	print request.json['home_or_mobile']
 
 	if 'state' in request.json:
 		c.execute("insert or replace into iotdata (base_guid, client_or_server,msg_time, state) values (?,?,datetime('now','localtime'),?);" , [request.json['guid'], request.json['home_or_mobile'], request.get_data()])
 		conn.commit()
-	return poll(push = 1)
+	return poll(push = 1, override = int(request.json['home_or_mobile']))
 
 
 

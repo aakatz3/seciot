@@ -122,14 +122,14 @@ if __name__ == "__main__":
 	zwave = ZWDeviceController(iotsec_settings.IOT_ZWAVE_NAME, iotsec_settings.IOT_ZWAVE_LOCATION)
 	zwavepoll = SecIOT("osrsrv.aakportfolio.com","enc_key", IOT_HOME_NODE)
 
-	i = 0
+	i = True
 	while True:
-		i ^= i
+		i = not(i)
 		#for node in zwave.export():
 		#	if not zwave.readState(node) == zwavepoll.getvalue(node):
 		#		zwavepoll.setvalue(node, zwave.readState(node))
 
-		if i == 0:
+		if i == False:
 #			print zwavepoll.poll_state(IOT_HOME_NODE)
 			print zwavepoll.poll_state(IOT_MOBILE_DEVICE)
 			for node in zwave.export():
@@ -146,4 +146,4 @@ if __name__ == "__main__":
 				zwavepoll.setvalue(anode, state)
                         zwavepoll.push_state()
                         time.sleep(.5)
-		time.sleep(0.5)
+		time.sleep(2)

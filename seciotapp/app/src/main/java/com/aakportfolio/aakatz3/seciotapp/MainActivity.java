@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         controlLayout = (LinearLayout) findViewById(R.id.control_layout);
         guid_submit = (Button)findViewById(R.id.guid_submit);
         guid_submit.setOnClickListener(this);
+        findViewById(R.id.pull).setOnClickListener(this);
+        findViewById(R.id.push).setOnClickListener(this);
         guid_text = (EditText) findViewById(R.id.editText);
         guid_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -111,11 +113,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.guid_submit:
+                guid_text.setEnabled(!guid_text.isEnabled());
                 guid = guid_text.getText().toString();
                 prefs.edit().putString("guid",guid).commit();
                 foobar.updateGuid(guid);
                 try {
                     foobar.pollState(this);
+                } catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                break;
+            case R.id.pull:
+                try {
+                    foobar.pollState(this);
+                } catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                break;
+            case R.id.push:
+                try {
+                    foobar.pushState();
                 } catch (Exception ex){
                     ex.printStackTrace();
                 }
