@@ -149,8 +149,8 @@ public class seciot {
         protected JSONObject doInBackground(SecIOTHelerParams... params) {
             myParams = params[0];
             try{
-                HashMap<String, String> map = new HashMap<>();
-                map.put("a","b");
+                //HashMap<String, String> map = new HashMap<>();
+                //map.put("a","b");
                 //return params[0].secureAPI.HTTPSPOSTJSON(params[0].url, map);
                 return myParams.secureAPI.HTTPSPOSTJSON(myParams.url,myParams.jso);
             }catch(Exception e){

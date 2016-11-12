@@ -33,8 +33,7 @@ import javax.net.ssl.TrustManagerFactory;
 /**
  * Handles secure server communications
  * SecureAPI singleton class
- * Created by Yi Zhao
- * Modified by Andrew Katz
+ * Created by Andrew Katz
  */
 public class SecureAPI {
 
@@ -47,7 +46,7 @@ public class SecureAPI {
         if( mySecureAPI == null){
             try {
                 mySecureAPI = new SecureAPI(c.getApplicationContext()
-                        .getResources().openRawResource(R.raw.fasd));
+                        .getResources().openRawResource(R.raw.cabundle));
             }catch (Exception e){
                 Log.d("SecureAPI Exception",e.getMessage());
             }
@@ -105,60 +104,7 @@ public class SecureAPI {
         this.createSocketFactory(inputStream);
     }
 
-   public JSONObject HTTPSGETJSON(String urlString) throws Exception {
-        URL url = new URL(urlString);
-        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-        httpsURLConnection.setReadTimeout(10000);
-        httpsURLConnection.setConnectTimeout(15000);
-        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
 
-        String response = getResponseFromStream(httpsURLConnection.getInputStream());
-        return new JSONObject(response);
-    }
-
-    public void HTTPSFETCHFILE(String urlString, File file) throws Exception {
-        URL url = new URL(urlString);
-        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
-
-        InputStream input = new BufferedInputStream(httpsURLConnection.getInputStream(), 8192);
-        // Output stream
-        OutputStream output = new FileOutputStream(file);
-
-        int count;
-        byte data[] = new byte[1024];
-
-        while ((count = input.read(data)) != -1) {
-            output.write(data, 0, count);
-        }
-        output.flush();
-        output.close();
-        input.close();
-    }
-
-    public JSONObject HTTPSPOSTJSON(String urlString, Map<String, String> params) throws Exception {
-        URL url = new URL(urlString);
-        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-
-        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
-        httpsURLConnection.setReadTimeout(10000);
-        httpsURLConnection.setConnectTimeout(15000);
-        httpsURLConnection.setRequestMethod("POST");
-        httpsURLConnection.setDoInput(true);
-        httpsURLConnection.setDoOutput(true);
-
-        OutputStream outputStream = httpsURLConnection.getOutputStream();
-        BufferedWriter bufferedWriter =
-                new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-        bufferedWriter.write(getPostString(params));
-        bufferedWriter.flush();
-        bufferedWriter.close();
-        outputStream.close();
-        httpsURLConnection.connect();
-
-        String response = getResponseFromStream(httpsURLConnection.getInputStream());
-        return new JSONObject(response);
-    }
 
     public JSONObject HTTPSPOSTJSON(String urlString, JSONObject json) throws Exception {
         URL url = new URL(urlString);
@@ -226,70 +172,4 @@ public class SecureAPI {
         return new JSONObject(response);
     }
 
-    public JSONObject HTTPSPOSTMULTI(String urlString, Map<String, String> params, Map<String,
-            ByteArrayOutputStream> files) throws Exception {
-        URL url = new URL(urlString);
-        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-
-        //Constants
-        String crlf = "\r\n";
-        String twoHyphens = "--";
-        String boundary =  "*****";
-
-        httpsURLConnection.setSSLSocketFactory(mySocketFactory);
-        httpsURLConnection.setReadTimeout(10000);
-        httpsURLConnection.setConnectTimeout(15000);
-        httpsURLConnection.setRequestMethod("POST");
-        httpsURLConnection.setDoInput(true);
-        httpsURLConnection.setDoOutput(true);
-        httpsURLConnection.setRequestProperty("Connection", "Keep-Alive");
-        httpsURLConnection.setRequestProperty("Cache-Control", "no-cache");
-        httpsURLConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-
-        DataOutputStream request = new DataOutputStream(
-                httpsURLConnection.getOutputStream());
-
-        //Process params
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            //Start wrapping
-            request.writeBytes(twoHyphens + boundary + crlf);
-            request.writeBytes("Content-Disposition: form-data; name=\"" + entry.getKey() + "\"" + crlf);
-            request.writeBytes(crlf);
-
-            request.writeBytes(entry.getValue());
-
-            //End wrap
-            request.writeBytes(crlf);
-            request.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
-        }
-
-        //Process files
-        int it = 0;
-        for (Map.Entry<String, ByteArrayOutputStream> entry : files.entrySet())
-        {
-            //File wrapping
-            request.writeBytes(twoHyphens + boundary + crlf);
-            request.writeBytes("Content-Disposition: form-data; name=\"" +
-                    entry.getKey() + "\";filename=\"" +
-                    it + "\"" + crlf);
-            request.writeBytes(crlf);
-
-            byte [] data = entry.getValue().toByteArray();
-
-            request.write(data, 0, data.length);
-
-            //End file wrapping
-            request.writeBytes(crlf);
-            request.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
-            ++it;
-        }
-
-        //Write and connect
-        request.flush();
-        request.close();
-        httpsURLConnection.connect();
-
-        String response = getResponseFromStream(httpsURLConnection.getInputStream());
-        return new JSONObject(response);
-    }
 }
